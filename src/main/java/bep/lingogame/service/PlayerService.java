@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class PlayerService{
+public class PlayerService {
     private PlayerRepository playerRepository;
 
     public PlayerService(PlayerRepository playerRepository) {
@@ -19,13 +19,15 @@ public class PlayerService{
     public List<Player> findAll() {
         return playerRepository.findAll();
     }
+
     public void findById(Long id) {
         playerRepository.findById(id);
     }
 
-    public void createNew(Player playerRestRequest){
+    public Player createNew(Player playerRestRequest) {
         Player player = new Player(null, playerRestRequest.name, playerRestRequest.score, LocalDateTime.now());
 
         playerRepository.save(player);
+        return player;
     }
 }

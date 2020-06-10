@@ -4,7 +4,6 @@ package bep.lingogame.controller;
 import bep.lingogame.domain.Player;
 import bep.lingogame.service.PlayerService;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -23,14 +22,13 @@ public class PlayerController {
     }
 
     @PostMapping(consumes = "application/json")
-    public String createNew(@RequestBody Player player) {
-        try {
-            playerService.createNew(player);
-
-        } catch (ResponseStatusException exc) {
-            return exc.toString();
+    public Long createNew(@RequestBody Player player) {
+        Player newplayer = playerService.createNew(player);
+        if (newplayer != null){
+            return newplayer.id;
+        }else{
+            return null;
         }
-        return "Post succesful";
     }
 
 }
