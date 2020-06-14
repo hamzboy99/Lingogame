@@ -15,6 +15,9 @@ https://lingogamehu.herokuapp.com/
 ### Game Over
 ![GameOver](Images/GameOver.png)
 
+### HighScore
+![HighScore](Images/HighScore.png)
+
 ### Game in Database
 ![Game_db](Images/Game_db.png)
 
