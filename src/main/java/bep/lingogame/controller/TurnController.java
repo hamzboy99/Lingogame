@@ -48,6 +48,7 @@ public class TurnController {
 
     @PostMapping(consumes = "application/json")
     public String guessWord(final @RequestBody Turn turn) {
+        turnService.cleanFeedback();
         turnService.updateGuessedWord(turn.guessedWord);
         wordLength = turn.wordLength;
         final Player currentPlayer = playerService.findById(playerController.returnPlayerId());
@@ -65,7 +66,6 @@ public class TurnController {
                 score += 50;
                 correctLetters = "";
                 turnService.createNew(currentGame);
-                System.out.println("Correct");
                 return "Goed geraden \n" + word + "\nAantalfout: " + aantalfout;
             } else if (turn.guessedWord.length() != wordLength) {
                 aantalfout++;
@@ -78,14 +78,11 @@ public class TurnController {
                 aantalfout++;
                 turnService.updateAantalFout(aantalfout);
                 turnService.createNew(currentGame);
-                System.out.println("Aantal fout: " + aantalfout);
             }
-            System.out.println(correctLetters + " correcte letters");
-            return correctLetters + " correcte letters \n Aantalfout: " + aantalfout;
+            return correctLetters + " correcte letters \nAantalfout: " + aantalfout + "\n" + turnService.getFeedback();
         } else { //Als de beurten op zijn, dus aantalfout 5.
             score = score - (aantalfout * 10);
             playerService.addToScore(currentPlayer, score);
-            System.out.println(currentPlayer.name + currentPlayer.score);
             turnService.createNew(currentGame);
             return "Game over \nScore: " + score;
         }

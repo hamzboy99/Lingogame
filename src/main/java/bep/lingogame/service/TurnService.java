@@ -13,23 +13,22 @@ import java.util.Random;
 
 @Service
 public class TurnService {
-    private final transient TextDeserializer textDeserializer;
+    private final transient WordRefiner wordRefiner;
     private final transient TurnRepository turnRepository;
     private final transient GameService gameService;
     private final transient List<String> allwords;
-    private transient int currentLetterExistenceInWord;
+    private final ArrayList<String> response = new ArrayList<>();
     private String word;
-    private int totaalFout = 0;
     private String getGuessedWord;
     private int getwordLength;
+    private int totaalFout = 0;
 
-    public TurnService(final TurnRepository turnRepository, final TextDeserializer textDeserializer, GameService gameService) throws FileNotFoundException {
+    public TurnService(final TurnRepository turnRepository, final WordRefiner wordRefiner, GameService gameService) throws FileNotFoundException {
         this.turnRepository = turnRepository;
-        this.textDeserializer = textDeserializer;
-        this.allwords = textDeserializer.deserialize("src/main/resources/static/basiswoorden.txt");
+        this.wordRefiner = wordRefiner;
+        this.allwords = wordRefiner.refine("src/main/resources/static/basiswoorden.txt");
         this.gameService = gameService;
     }
-
 
     public String returnRandomWord(final int wordLength) {
         final List<String> checkedWords = sortWords(wordLength);
@@ -58,7 +57,7 @@ public class TurnService {
         for (final char letter : woord.toCharArray()) {
             final char currentLetter = guessedWord.charAt(i);
             if (letter == guessedWord.charAt(i)) { //Checkt of de letter op de goeie plek staat
-                System.out.println(letter + " correct");
+                response.add(letter + " correct");
                 correctLetters += letter;
             } else if (letter != guessedWord.charAt(i)) {
                 correctLetters = checkPresentOrAbsent(currentLetter, correctLetters, woord);
@@ -69,31 +68,13 @@ public class TurnService {
     }
 
     public String checkPresentOrAbsent(final char currentLetter, String correctLetters, final String word) {
-        currentLetterExistenceInWord = checkExistence(currentLetter, correctLetters, word);
         if ((word.indexOf(currentLetter)) >= 0) { //Checkt of de letter erin zit.
-            if ((correctLetters.indexOf(currentLetter)) >= 0) { //Checkt of de letter al is geweest.
-                System.out.println(currentLetter + " present, deze letter komt " + currentLetterExistenceInWord + " keer voor");
-            } else { //Als de letter niet is gekozen.
-                System.out.println(currentLetter + " present, deze letter zit niet op de goede plek");
-            }
+            response.add(currentLetter + " present");
         } else {
-            System.out.println(currentLetter + " absent, deze letter zit niet in het woord");
+            response.add(currentLetter + " absent");
         }
         correctLetters += '_';
         return correctLetters;
-    }
-
-    public int checkExistence(final char currentLetter, final String correctLetters, final String randomwoord) {
-        int index = randomwoord.indexOf(currentLetter);
-
-        currentLetterExistenceInWord = 0;
-        if ((correctLetters.indexOf(currentLetter)) >= 0) { //Checkt of de letter al aanbod is gekomen.
-            while (index >= 0) {
-                index = randomwoord.indexOf(currentLetter, index + 1);
-                currentLetterExistenceInWord += 1;
-            }
-        }
-        return currentLetterExistenceInWord;
     }
 
     public void updateAantalFout(int aantalFout) {
@@ -102,6 +83,14 @@ public class TurnService {
 
     public void updateGuessedWord(String guessedWord) {
         getGuessedWord = guessedWord;
+    }
+
+    public ArrayList<String> getFeedback() {
+        return response;
+    }
+
+    public void cleanFeedback() {
+        response.clear();
     }
 
     public Turn createNew(final Game game) {

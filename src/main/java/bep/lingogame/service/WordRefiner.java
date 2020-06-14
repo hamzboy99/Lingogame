@@ -9,25 +9,25 @@ import java.util.List;
 import java.util.Scanner;
 
 @Service
-public class TextDeserializer implements FileDeserializerInterface {
+public class WordRefiner implements WordRefinerInterface {
 
-    public TextDeserializer() {
+    public WordRefiner() {
     }
 
     @Override
-    public final List<String> deserialize(final String file) throws FileNotFoundException {
-        final ArrayList<String> words = new ArrayList<>();
+    public final List<String> refine(final String file) throws FileNotFoundException {
+        final ArrayList<String> allwords = new ArrayList<>();
 
         final File myObj = new File(file);
         final Scanner myReader = new Scanner(myObj);
         try {
             while (myReader.hasNextLine()) {
                 final String data = myReader.nextLine();
-                words.add(data);
+                allwords.add(data);
             }
         } finally {
             myReader.close();
         }
-        return words;
+        return allwords;
     }
 }
