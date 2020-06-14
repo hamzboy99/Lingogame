@@ -1,5 +1,6 @@
 package bep.lingogame.service;
 
+import bep.lingogame.domain.Game;
 import bep.lingogame.domain.Turn;
 import bep.lingogame.repository.TurnRepository;
 import org.springframework.stereotype.Service;
@@ -14,20 +15,27 @@ import java.util.Random;
 public class TurnService {
     private final transient TextDeserializer textDeserializer;
     private final transient TurnRepository turnRepository;
+    private final transient GameService gameService;
     private final transient List<String> allwords;
     private transient int currentLetterExistenceInWord;
+    private String word;
+    private int totaalFout = 0;
+    private String getGuessedWord;
+    private int getwordLength;
 
-    public TurnService(final TurnRepository turnRepository, final TextDeserializer textDeserializer) throws FileNotFoundException {
+    public TurnService(final TurnRepository turnRepository, final TextDeserializer textDeserializer, GameService gameService) throws FileNotFoundException {
         this.turnRepository = turnRepository;
         this.textDeserializer = textDeserializer;
         this.allwords = textDeserializer.deserialize("src/main/resources/static/basiswoorden.txt");
+        this.gameService = gameService;
     }
 
 
     public String returnRandomWord(final int wordLength) {
         final List<String> checkedWords = sortWords(wordLength);
         final int rnd = new Random().nextInt(checkedWords.size());
-        final String word = checkedWords.get(rnd);
+        word = checkedWords.get(rnd);
+        getwordLength = wordLength;
         System.out.println(word);
         return word;
     }
@@ -88,12 +96,16 @@ public class TurnService {
         return currentLetterExistenceInWord;
     }
 
-    public void findById(final Long id) {
-        turnRepository.findById(id);
+    public void updateAantalFout(int aantalFout) {
+        totaalFout = aantalFout;
     }
 
-    public Turn createNew(final Turn turnRestRequest) {
-        final Turn turn = new Turn(null, turnRestRequest.chances, turnRestRequest.status, turnRestRequest.guessedWord, turnRestRequest.wordLength, LocalDateTime.now());
+    public void updateGuessedWord(String guessedWord) {
+        getGuessedWord = guessedWord;
+    }
+
+    public Turn createNew(final Game game) {
+        final Turn turn = new Turn(null, totaalFout, word, getGuessedWord, getwordLength, game, LocalDateTime.now());
         turnRepository.save(turn);
         return turn;
     }

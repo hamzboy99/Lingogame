@@ -1,6 +1,5 @@
 package bep.lingogame.service;
 
-import bep.lingogame.domain.HighScore;
 import bep.lingogame.domain.Player;
 import org.springframework.stereotype.Service;
 

@@ -15,6 +15,11 @@ public class GameService {
         this.gameRepository = gameRepository;
     }
 
+    public Game findById(final Long id) {
+        return gameRepository.findById(id);
+    }
+
+
     public Game createNew(final Player player) {
         final Game game = new Game(null, player, LocalDateTime.now());
         gameRepository.save(game);

@@ -1,5 +1,6 @@
 package bep.lingogame.controller;
 
+import bep.lingogame.domain.Game;
 import bep.lingogame.domain.Player;
 import bep.lingogame.domain.Turn;
 import bep.lingogame.service.GameService;
@@ -14,17 +15,19 @@ public class TurnController {
     private final transient PlayerService playerService;
     private final transient PlayerController playerController;
     private final transient GameService gameService;
-    private transient int aantalfout = 0;
+    private final transient GameController gameController;
     private transient String word;
     private transient String correctLetters;
+    private transient int aantalfout = 0;
     private transient int wordLength = 5;
     private transient int score = 50;
 
-    public TurnController(final TurnService turnService, final PlayerService playerService, final PlayerController playerController, final GameService gameService) {
+    public TurnController(final TurnService turnService, final PlayerService playerService, final PlayerController playerController, final GameService gameService, GameController gameController) {
         this.turnService = turnService;
         this.playerService = playerService;
         this.playerController = playerController;
         this.gameService = gameService;
+        this.gameController = gameController;
     }
 
     @GetMapping
@@ -42,37 +45,48 @@ public class TurnController {
         return returnWaarde;
     }
 
+
     @PostMapping(consumes = "application/json")
     public String guessWord(final @RequestBody Turn turn) {
+        turnService.updateGuessedWord(turn.guessedWord);
         wordLength = turn.wordLength;
+        final Player currentPlayer = playerService.findById(playerController.returnPlayerId());
+        final Game currentGame = gameService.findById(playerController.returnGameId());
 
         if (aantalfout < 5) {
             if (turn.guessedWord.charAt(0) != word.charAt(0)) { //Als het woord met een andere letter begint.
                 aantalfout++;
+                turnService.updateAantalFout(aantalfout);
+                turnService.createNew(currentGame);
                 return "Vul een woord in die begint met de letter " + word.charAt(0) + "\nAantalfout: " + aantalfout;
             } else if (turn.guessedWord.equals(word)) {
                 aantalfout = 0;
+                turnService.updateAantalFout(aantalfout);
                 score += 50;
                 correctLetters = "";
+                turnService.createNew(currentGame);
                 System.out.println("Correct");
                 return "Goed geraden \n" + word + "\nAantalfout: " + aantalfout;
             } else if (turn.guessedWord.length() != wordLength) {
                 aantalfout++;
+                turnService.updateAantalFout(aantalfout);
+                turnService.createNew(currentGame);
                 return "Vul een woord in met de wordlengte van " + wordLength + " letters\nAantalfout: " + aantalfout;
             } else { //Als het woord niet in een keer is geraden.
                 final String guessedWord = turn.guessedWord;
                 correctLetters = turnService.checkGuessedLetters(guessedWord, word);
                 aantalfout++;
+                turnService.updateAantalFout(aantalfout);
+                turnService.createNew(currentGame);
                 System.out.println("Aantal fout: " + aantalfout);
             }
-            System.out.println(correctLetters + " je gok");
+            System.out.println(correctLetters + " correcte letters");
             return correctLetters + " correcte letters \n Aantalfout: " + aantalfout;
         } else { //Als de beurten op zijn, dus aantalfout 5.
             score = score - (aantalfout * 10);
-            final Player player = playerService.findById(playerController.returnPlayerId());
-            playerService.addToScore(player, score);
-            System.out.println(player.name + player.score);
-            gameService.createNew(player);
+            playerService.addToScore(currentPlayer, score);
+            System.out.println(currentPlayer.name + currentPlayer.score);
+            turnService.createNew(currentGame);
             return "Game over \nScore: " + score;
         }
     }
