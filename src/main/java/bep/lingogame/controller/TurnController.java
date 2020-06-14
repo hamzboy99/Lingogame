@@ -45,7 +45,6 @@ public class TurnController {
         return returnWaarde;
     }
 
-
     @PostMapping(consumes = "application/json")
     public String guessWord(final @RequestBody Turn turn) {
         turnService.cleanFeedback();
@@ -87,5 +86,4 @@ public class TurnController {
             return "Game over \nScore: " + score;
         }
     }
-
 }
