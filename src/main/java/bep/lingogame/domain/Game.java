@@ -1,30 +1,29 @@
 package bep.lingogame.domain;
 
-
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import java.time.LocalDateTime;
 
 @Entity
-public class Player {
+public class Game {
     @Id
     @GeneratedValue
     public  Long id;
-    public  String name;
-    public  int score;
+    @OneToOne
+    private  Player player;
     @CreationTimestamp
     public  LocalDateTime createdAt;
 
-    public Player() {
+    public Game() {
     }
 
-    public Player( Long id,  String name,  int score,  LocalDateTime createdAt) {
+    public Game( Long id,  Player player,  LocalDateTime createdAt) {
         this.id = id;
-        this.name = name;
-        this.score = score;
+        this.player = player;
         this.createdAt = createdAt;
     }
 }

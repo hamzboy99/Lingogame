@@ -10,9 +10,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/player")
 public class PlayerController {
-    private PlayerService playerService;
+    private final transient PlayerService playerService;
+    private transient Long playerId;
 
-    public PlayerController(PlayerService playerService) {
+    public PlayerController(final PlayerService playerService) {
         this.playerService = playerService;
     }
 
@@ -22,13 +23,19 @@ public class PlayerController {
     }
 
     @PostMapping(consumes = "application/json")
-    public Long createNew(@RequestBody Player player) {
-        Player newplayer = playerService.createNew(player);
-        if (newplayer != null){
+    public Long createNew(final @RequestBody Player player) {
+        final Player newplayer = playerService.createNew(player);
+        if (newplayer != null) {
+            playerId = newplayer.id;
             return newplayer.id;
-        }else{
+        } else {
             return null;
         }
+    }
+
+    public Long returnPlayerId(){
+
+        return playerId;
     }
 
 }
