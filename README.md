@@ -1,4 +1,6 @@
 # Lingogame
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=hamzboy99_Lingogame&metric=alert_status)](https://sonarcloud.io/dashboard?id=hamzboy99_Lingogame)
+
 https://lingogamehu.herokuapp.com/
 
 ## Instructions
