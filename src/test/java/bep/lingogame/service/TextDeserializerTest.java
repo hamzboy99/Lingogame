@@ -1,4 +1,4 @@
-package service;
+package bep.lingogame.service;
 
 import bep.lingogame.service.WordRefiner;
 import org.assertj.core.util.VisibleForTesting;

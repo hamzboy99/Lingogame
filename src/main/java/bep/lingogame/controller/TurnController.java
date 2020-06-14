@@ -1,8 +1,8 @@
 package bep.lingogame.controller;
 
-import bep.lingogame.domain.Game;
-import bep.lingogame.domain.Player;
-import bep.lingogame.domain.Turn;
+import bep.lingogame.Game;
+import bep.lingogame.Player;
+import bep.lingogame.Turn;
 import bep.lingogame.service.GameService;
 import bep.lingogame.service.PlayerService;
 import bep.lingogame.service.TurnService;

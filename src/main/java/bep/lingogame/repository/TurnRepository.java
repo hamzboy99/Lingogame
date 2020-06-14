@@ -1,6 +1,6 @@
 package bep.lingogame.repository;
 
-import bep.lingogame.domain.Turn;
+import bep.lingogame.Turn;
 import org.springframework.data.repository.Repository;
 
 import java.util.List;

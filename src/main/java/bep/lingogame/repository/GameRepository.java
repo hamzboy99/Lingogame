@@ -1,6 +1,6 @@
 package bep.lingogame.repository;
 
-import bep.lingogame.domain.Game;
+import bep.lingogame.Game;
 import org.springframework.data.repository.Repository;
 
 public interface GameRepository extends Repository<Game, Long> {
