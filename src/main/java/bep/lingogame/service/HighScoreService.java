@@ -1,6 +1,6 @@
 package bep.lingogame.service;
 
-import bep.lingogame.Player;
+import bep.lingogame.domain.Player;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

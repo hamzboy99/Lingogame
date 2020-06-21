@@ -1,4 +1,4 @@
-package bep.lingogame;
+package bep.lingogame.domain;
 
 
 import org.hibernate.annotations.CreationTimestamp;

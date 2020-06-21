@@ -28,6 +28,7 @@
 		<sonar.projectKey>hamzboy99_Lingogame</sonar.projectKey>
 		<sonar.organization>hamzboy99</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+		<sonar.login>bf394b0ddda4586b9d561b08e8aad223f867f961</sonar.login>
     </properties>
 
 	<dependencies>

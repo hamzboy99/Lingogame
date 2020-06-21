@@ -1,4 +1,4 @@
-package bep.lingogame;
+package bep.lingogame.domain;
 
 public class HighScore {
     public transient Player player;

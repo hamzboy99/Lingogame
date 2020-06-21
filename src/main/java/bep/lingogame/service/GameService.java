@@ -1,7 +1,7 @@
 package bep.lingogame.service;
 
-import bep.lingogame.Game;
-import bep.lingogame.Player;
+import bep.lingogame.domain.Game;
+import bep.lingogame.domain.Player;
 import bep.lingogame.repository.GameRepository;
 import org.springframework.stereotype.Service;
 

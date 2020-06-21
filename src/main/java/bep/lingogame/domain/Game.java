@@ -1,4 +1,4 @@
-package bep.lingogame;
+package bep.lingogame.domain;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -14,7 +14,7 @@ public class Game {
     @GeneratedValue
     public  Long id;
     @OneToOne
-    private  Player player;
+    private Player player;
     @CreationTimestamp
     public  LocalDateTime createdAt;
 

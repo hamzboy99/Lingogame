@@ -1,5 +1,6 @@
-package bep.lingogame;
+package bep.lingogame.domain;
 
+import bep.lingogame.domain.Game;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.Entity;
