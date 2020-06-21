@@ -14,11 +14,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @VisibleForTesting
 @DisplayName("WordRefiner")
-public class TextDeserializerTest {
+public class WordRefinerTest {
     private static String textFileLocation = "src/test/resources/deserializetext.txt";
     private static List<String> words = Arrays.asList("mand", "manco", "mandir", "mandala", "mandfles", "tussenin", "bedrijfsgoed", "tussenjaar", "tussenkop", "tussen-n", "bedrijfs-pc-netwerk");
 
-    public TextDeserializerTest() {
+    public WordRefinerTest() {
     }
 
     @Test
